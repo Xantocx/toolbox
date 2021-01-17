@@ -1,4 +1,4 @@
-from publisher import Subject, FilteredPublisher, Publisher
+from publisher import Subject, FilteredCachedPublisher, Publisher, FilteredBehaviorPublisher, ReplayPublisher
 from rx import operators as ops
 from rx import Observable, of
 
@@ -20,7 +20,7 @@ class AddNode(Node):
         self.value1 = value1
         self.value2 = value2
 
-        self.output = FilteredPublisher()
+        self.output = FilteredCachedPublisher()
 
         super().__init__(name, description)
 
@@ -31,11 +31,15 @@ class AddNode(Node):
         ).subscribe(self.output)
 
 
-value1 = of(1, 2, 3, 4, 5, 6)
+value1 = of(1, 2, 3, 4, 5, 6, 6)
 value2 = Publisher()
 
 add = AddNode(value1, value2)
 add.output.subscribe(lambda val: print(val))
 
 value2.publish(1, 2, 3)
+print("Value2 Test: " + str(value2()))
+print("Output: " + str(add.output()))
 value2.publish(4, 5, 6)
+
+print("Output: " + str(add.output()))
