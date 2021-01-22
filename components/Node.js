@@ -7,7 +7,7 @@ app.component("node", {
         }
     },
 
-    emmits: ["start-dragging"],
+    emits: ["start-dragging"],
 
     template:
         /*html*/
